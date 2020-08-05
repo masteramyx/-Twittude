@@ -1,24 +1,12 @@
 package com.example.twittude
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import com.bluelinelabs.conductor.Conductor
-import com.bluelinelabs.conductor.Router
-import com.bluelinelabs.conductor.RouterTransaction
-import kotlinx.android.synthetic.main.activity_main.*
+import com.bluelinelabs.conductor.Controller
+import com.example.twittude.ui.TwitMainController
+import com.karakum.base.BaseControllerActivity
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseControllerActivity() {
 
-    private lateinit var router: Router
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        router = Conductor.attachRouter(this, container, savedInstanceState)
-
-        router.setRoot(RouterTransaction.with(TwitMainController()))
-    }
-
+    override fun getRootController(): Controller =
+        TwitMainController()
 
 }
