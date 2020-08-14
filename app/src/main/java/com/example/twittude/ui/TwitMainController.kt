@@ -7,24 +7,36 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.twittude.R
 import com.example.twittude.model.TwitListItem
 import com.example.twittude.model.TwitListSearchItem
-import com.example.twittude.ui.adapter.TwitMainListAdapter
-import com.example.twittude.ui.adapter.TwitRecyclerItem
+import com.example.twittude.ui.adapter.TwitMainSearchListItemViewHolder
 import com.google.android.material.snackbar.Snackbar
 import com.karakum.base.BaseMvvmController
 import com.karakum.base.Mvvm
-import io.reactivex.functions.Function
+import com.karakum.base.recycler.BaseRecyclerAdapterImpl
+import com.karakum.base.recycler.BaseRecyclerItem
+import com.karakum.base.recycler.BaseRecyclerViewHolder
 import kotlinx.android.synthetic.main.twit_main_controller.view.*
-import kotlinx.android.synthetic.main.twit_main_search_view.view.*
 import org.koin.core.context.GlobalContext.get
 import timber.log.Timber
-import java.util.concurrent.TimeUnit
 
-class TwitMainController : BaseMvvmController<TwitMainViewModel, TwitMainViewModel.State>() {
+class TwitMainController : BaseMvvmController<TwitMainViewModel, TwitMainViewModel.State>(),
+    TwitMainSearchListItemViewHolder.SearchListener {
 
     override val viewModel: TwitMainViewModel = get().koin.get()
 
     private val adapter by lazy(LazyThreadSafetyMode.NONE) {
-        TwitMainListAdapter<TwitRecyclerItem>(activity!!)
+        object : BaseRecyclerAdapterImpl<BaseRecyclerItem>(context) {
+            override fun onBindViewHolderListeners(
+                item: BaseRecyclerItem,
+                holder: BaseRecyclerViewHolder<*>
+            ) {
+                when (item) {
+                    is TwitListSearchItem -> {
+                        (holder as TwitMainSearchListItemViewHolder).listener =
+                            this@TwitMainController
+                    }
+                }
+            }
+        }
     }
 
     private val searchView by lazy(LazyThreadSafetyMode.NONE) {
@@ -35,7 +47,7 @@ class TwitMainController : BaseMvvmController<TwitMainViewModel, TwitMainViewMod
         return inflater.inflate(R.layout.twit_main_controller, container, false).apply {
             twitMainRecycler.adapter = adapter
             twitMainRecycler.layoutManager = LinearLayoutManager(activity)
-            adapter.addItem(searchView)
+            adapter.addItem(searchView, false)
         }
     }
 
@@ -45,35 +57,20 @@ class TwitMainController : BaseMvvmController<TwitMainViewModel, TwitMainViewMod
         viewModel.getToken()
     }
 
+    override fun onSearched(query: String) {
+        viewModel.search(query)
+    }
 
     override fun onStateChange(state: Mvvm.State) {
         when (state) {
             is TwitMainViewModel.State.Authentication -> {
                 Snackbar.make(view!!, "Authenticated", Snackbar.LENGTH_SHORT).show()
                 //Set search bar listener after authentication
-                addToDisposables(
-                    com.jakewharton.rxbinding2.widget.RxTextView.afterTextChangeEvents(view!!.twitMainSearchEt)
-                        .skipInitialValue()
-                        .map(Function<com.jakewharton.rxbinding2.widget.TextViewAfterTextChangeEvent, String> {
-                            it.editable().toString().trim()
-                        })
-                        .debounce(
-                            500.toLong(),
-                            TimeUnit.MILLISECONDS,
-                            io.reactivex.android.schedulers.AndroidSchedulers.mainThread()
-                        )
-                        .observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
-                        .subscribe({
-                            viewModel.search(it)
-                        }, {
-                            Timber.d(it)
-                        })
-                )
             }
             is TwitMainViewModel.State.Data -> {
                 Timber.d(state.data.toString())
-                val list = mutableListOf<TwitRecyclerItem>()
-                adapter.addItem(searchView)
+                val list = mutableListOf<BaseRecyclerItem>()
+                list.add(searchView)
                 state.data.tweets.forEach {
                     list.add(TwitListItem(it.text))
                 }

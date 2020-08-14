@@ -3,12 +3,13 @@ package com.example.twittude.model
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.twittude.R
-import com.example.twittude.ui.adapter.TwitMainListItemViewHolder
-import com.example.twittude.ui.adapter.TwitRecyclerItem
+import com.example.twittude.ui.adapter.TwitMainSearchListItemViewHolder
+import com.karakum.base.recycler.BaseRecyclerItem
+import com.karakum.base.recycler.BaseRecyclerViewHolder
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-class TwitListSearchItem : TwitRecyclerItem {
+class TwitListSearchItem : BaseRecyclerItem {
     override fun getViewType(): Int {
         return R.layout.twit_main_search_view
     }
@@ -17,8 +18,8 @@ class TwitListSearchItem : TwitRecyclerItem {
         inflater: LayoutInflater,
         parent: ViewGroup?,
         attachToRoot: Boolean
-    ): TwitMainListItemViewHolder<*> {
-        return TwitMainListItemViewHolder<TwitRecyclerItem>(
+    ): BaseRecyclerViewHolder<*> {
+        return TwitMainSearchListItemViewHolder(
             inflater.inflate(
                 getViewType(),
                 parent,
