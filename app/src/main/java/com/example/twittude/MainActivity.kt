@@ -1,12 +1,12 @@
 package com.example.twittude
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
+import com.bluelinelabs.conductor.Controller
+import com.example.twittude.ui.TwitMainController
+import com.karakum.base.BaseControllerActivity
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseControllerActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
+    override fun getRootController(): Controller =
+        TwitMainController()
+
 }
