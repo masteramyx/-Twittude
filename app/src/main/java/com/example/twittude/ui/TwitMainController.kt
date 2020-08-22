@@ -3,6 +3,7 @@ package com.example.twittude.ui
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.twittude.R
 import com.example.twittude.model.TwitListItem
@@ -33,6 +34,7 @@ class TwitMainController : BaseMvvmController<TwitMainViewModel, TwitMainViewMod
                     is TwitListSearchItem -> {
                         (holder as TwitMainSearchListItemViewHolder).listener =
                             this@TwitMainController
+
                     }
                 }
             }
@@ -45,8 +47,11 @@ class TwitMainController : BaseMvvmController<TwitMainViewModel, TwitMainViewMod
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         return inflater.inflate(R.layout.twit_main_controller, container, false).apply {
-            twitMainRecycler.adapter = adapter
-            twitMainRecycler.layoutManager = LinearLayoutManager(activity)
+            twitMainRecycler.apply {
+                adapter = this@TwitMainController.adapter
+                layoutManager = LinearLayoutManager(context)
+                addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            }
             adapter.addItem(searchView, false)
         }
     }

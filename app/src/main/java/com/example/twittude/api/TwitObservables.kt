@@ -48,7 +48,10 @@ object TwitObservables {
     fun search(query: String): Single<QueryResult> {
         return Single.create(SingleOnSubscribe<QueryResult> {
             try {
-                it.onSuccess(twitter.search(Query(query)))
+                it.onSuccess(twitter.search(Query(query).apply {
+                    lang = LANGUAGE_PARAMETER
+                    count = COUNT_PARAMETER
+                }))
             } catch (e: Exception) {
                 println("Can't get Query Result (Reactive Stream)")
                 println(e.toString())
@@ -67,4 +70,7 @@ object TwitObservables {
             .setOAuth2AccessToken(oAuth2Token.accessToken)
         return configCopy.build()
     }
+
+    private const val LANGUAGE_PARAMETER = "en"
+    private const val COUNT_PARAMETER = 25
 }
