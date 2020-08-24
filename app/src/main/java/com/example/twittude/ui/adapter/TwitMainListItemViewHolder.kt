@@ -9,12 +9,20 @@ import kotlinx.android.synthetic.main.twit_main_recycler_list_item.view.*
 class TwitMainListItemViewHolder(view: View) :
     BaseRecyclerViewHolder<BaseRecyclerItem>(view) {
 
+    var listener: ClickListener? = null
+
+    interface ClickListener {
+        fun onItemClicked(tweet: String)
+    }
+
     override fun bindItem(item: BaseRecyclerItem) {
+        itemView.setOnClickListener {
+            listener?.onItemClicked((item as TwitListItem).text)
+        }
         when (item) {
             is TwitListItem -> {
                 itemView.twitMainRecyclerListItemTv.text = item.text
             }
         }
     }
-
 }

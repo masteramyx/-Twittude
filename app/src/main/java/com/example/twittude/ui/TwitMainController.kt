@@ -6,8 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.twittude.R
+import com.example.twittude.TextClassificationClient
 import com.example.twittude.model.TwitListItem
 import com.example.twittude.model.TwitListSearchItem
+import com.example.twittude.ui.adapter.TwitMainListItemViewHolder
 import com.example.twittude.ui.adapter.TwitMainSearchListItemViewHolder
 import com.google.android.material.snackbar.Snackbar
 import com.karakum.base.BaseMvvmController
@@ -20,9 +22,12 @@ import org.koin.core.context.GlobalContext.get
 import timber.log.Timber
 
 class TwitMainController : BaseMvvmController<TwitMainViewModel, TwitMainViewModel.State>(),
-    TwitMainSearchListItemViewHolder.SearchListener {
+    TwitMainSearchListItemViewHolder.SearchListener,
+    TwitMainListItemViewHolder.ClickListener {
 
     override val viewModel: TwitMainViewModel = get().koin.get()
+
+    lateinit var client: TextClassificationClient
 
     private val adapter by lazy(LazyThreadSafetyMode.NONE) {
         object : BaseRecyclerAdapterImpl<BaseRecyclerItem>(context) {
@@ -34,7 +39,10 @@ class TwitMainController : BaseMvvmController<TwitMainViewModel, TwitMainViewMod
                     is TwitListSearchItem -> {
                         (holder as TwitMainSearchListItemViewHolder).listener =
                             this@TwitMainController
-
+                    }
+                    is TwitListItem -> {
+                        (holder as TwitMainListItemViewHolder).listener =
+                            this@TwitMainController
                     }
                 }
             }
@@ -60,10 +68,18 @@ class TwitMainController : BaseMvvmController<TwitMainViewModel, TwitMainViewMod
     override fun onAttach(view: View) {
         super.onAttach(view)
         viewModel.getToken()
+        client = TextClassificationClient(context)
+        //todo make async
+        client.load()
     }
 
     override fun onSearched(query: String) {
         viewModel.search(query)
+    }
+
+    override fun onItemClicked(tweet: String) {
+        val result = client.classify(tweet)
+        Snackbar.make(view!!, "${result[0]}\n${result[1]}", Snackbar.LENGTH_SHORT).show()
     }
 
     override fun onStateChange(state: Mvvm.State) {
