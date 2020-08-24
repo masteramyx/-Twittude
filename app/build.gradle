@@ -88,6 +88,8 @@ dependencies {
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
     // Koin AndroidX Experimental features
     implementation "org.koin:koin-androidx-ext:$koin_version"
+    //TensorFlow
+    implementation 'org.tensorflow:tensorflow-lite:2.2.0'
 
 
     //testing
