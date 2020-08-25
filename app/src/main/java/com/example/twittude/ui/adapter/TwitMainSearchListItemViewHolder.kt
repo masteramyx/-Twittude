@@ -23,6 +23,7 @@ class TwitMainSearchListItemViewHolder(view: View) :
                 .map {
                     it.editable().toString().trim()
                 }
+                .filter { it.isNotEmpty() }
                 .debounce(
                     500.toLong(),
                     TimeUnit.MILLISECONDS,
