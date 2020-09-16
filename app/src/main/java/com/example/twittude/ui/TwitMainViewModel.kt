@@ -1,17 +1,17 @@
 package com.example.twittude.ui
 
 import com.example.twittude.api.TwitMainRepository
+import com.example.twittude.model.TwitListItem
 import com.karakum.base.BaseViewModel
 import com.karakum.base.Mvvm
-import com.karakum.base.scheduler
 import kotlinx.android.parcel.Parcelize
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import twitter4j.QueryResult
 import twitter4j.Twitter
 
 class TwitMainViewModel(
-    val repository: TwitMainRepository,
-    val scheduler: scheduler
+    val repository: TwitMainRepository
 ) : BaseViewModel<TwitMainViewModel.State>() {
 
 
@@ -29,8 +29,15 @@ class TwitMainViewModel(
     fun search(queryString: String) {
         lifecycleScope.launch {
             try {
-                val result = repository.searchQuery(queryString)
-                stateSubject.onNext(State.Data(result))
+                if (queryString.isEmpty()) {
+                    stateSubject.onNext(State.Empty())
+                } else {
+                    queryString.apply {
+                        delay(500)
+                        val result = repository.searchQuery(queryString)
+                        stateSubject.onNext(State.Data(result))
+                    }
+                }
             } catch (exception: Exception) {
                 stateSubject.onNext(State.Error(exception))
             }
@@ -48,7 +55,67 @@ class TwitMainViewModel(
         @Parcelize
         data class Data(val data: QueryResult) : State()
 
+//        @Parcelize
+//        data class Data(val data: List<TwitListItem>) : State()
+
+        @Parcelize
+        data class Empty(val empty: Boolean = true) : State()
+
         @Parcelize
         data class Error(val error: Throwable) : State()
     }
 }
+
+val fakeList = listOf(
+    TwitListItem("COW JUMPED OVER THE MOON"),
+    TwitListItem("FOX IN THE SNOW"),
+    TwitListItem("TWO SIGMA HERE I COME"),
+    TwitListItem("COW JUMPED OVER THE MOON"),
+    TwitListItem("FOX IN THE SNOW"),
+    TwitListItem("TWO SIGMA HERE I COME"),
+    TwitListItem("COW JUMPED OVER THE MOON"),
+    TwitListItem("FOX IN THE SNOW"),
+    TwitListItem("TWO SIGMA HERE I COME"),
+    TwitListItem("COW JUMPED OVER THE MOON"),
+    TwitListItem("FOX IN THE SNOW"),
+    TwitListItem("TWO SIGMA HERE I COME"),
+    TwitListItem("COW JUMPED OVER THE MOON"),
+    TwitListItem("FOX IN THE SNOW"),
+    TwitListItem("TWO SIGMA HERE I COME"),
+    TwitListItem("COW JUMPED OVER THE MOON"),
+    TwitListItem("FOX IN THE SNOW"),
+    TwitListItem("TWO SIGMA HERE I COME"),
+    TwitListItem("COW JUMPED OVER THE MOON"),
+    TwitListItem("FOX IN THE SNOW"),
+    TwitListItem("TWO SIGMA HERE I COME"),
+    TwitListItem("COW JUMPED OVER THE MOON"),
+    TwitListItem("FOX IN THE SNOW"),
+    TwitListItem("TWO SIGMA HERE I COME"),
+    TwitListItem("COW JUMPED OVER THE MOON"),
+    TwitListItem("FOX IN THE SNOW"),
+    TwitListItem("TWO SIGMA HERE I COME"),
+    TwitListItem("COW JUMPED OVER THE MOON"),
+    TwitListItem("FOX IN THE SNOW"),
+    TwitListItem("TWO SIGMA HERE I COME"),
+    TwitListItem("COW JUMPED OVER THE MOON"),
+    TwitListItem("FOX IN THE SNOW"),
+    TwitListItem("TWO SIGMA HERE I COME"),
+    TwitListItem("COW JUMPED OVER THE MOON"),
+    TwitListItem("FOX IN THE SNOW"),
+    TwitListItem("TWO SIGMA HERE I COME"),
+    TwitListItem("COW JUMPED OVER THE MOON"),
+    TwitListItem("FOX IN THE SNOW"),
+    TwitListItem("TWO SIGMA HERE I COME")
+)
+
+val fakeList2 = listOf(
+    TwitListItem("CTest Search"),
+    TwitListItem("Test Search"),
+    TwitListItem("TTest Search"),
+    TwitListItem("CTest Search"),
+    TwitListItem("Test Search"),
+    TwitListItem("TTest Search"),
+    TwitListItem("CTest Search"),
+    TwitListItem("Test Search"),
+
+    )

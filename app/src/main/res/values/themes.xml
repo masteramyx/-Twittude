@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Twittude" parent="Theme.MaterialComponents.DayNight.DarkActionBar" >
+        <item name="colorPrimary">@color/blue500</item>
+        <item name="colorPrimaryDark">@color/blue800</item>
+        <item name="colorAccent">@color/yellow700</item>
+        <item name="android:statusBarColor">@color/black30</item>
+    </style>
+
+    <style name="Theme.Twittude.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Twittude.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
+
+    <style name="Theme.Twittude.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
+</resources>
