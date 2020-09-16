@@ -10,6 +10,7 @@ import twitter4j.TwitterFactory
 import twitter4j.auth.OAuth2Token
 import twitter4j.conf.Configuration
 import twitter4j.conf.ConfigurationBuilder
+import kotlin.jvm.Throws
 
 class TwitMainRepositoryImpl() : TwitMainRepository {
 

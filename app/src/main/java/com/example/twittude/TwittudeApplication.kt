@@ -15,7 +15,7 @@ class TwittudeApplication : Application() {
         Timber.plant(Timber.DebugTree())
 
         startKoin {
-            logger(KoinLogger(Level.DEBUG))
+            logger(KoinLogger())
             androidContext(this@TwittudeApplication)
             modules(listOf(
                 appDi
@@ -24,7 +24,7 @@ class TwittudeApplication : Application() {
     }
 
 
-    class KoinLogger(level: Level) : Logger() {
+    class KoinLogger() : Logger() {
         override fun log(level: Level, msg: MESSAGE) {
             when (level) {
                 Level.DEBUG -> Log.d("KOIN_DEBUG", msg)
