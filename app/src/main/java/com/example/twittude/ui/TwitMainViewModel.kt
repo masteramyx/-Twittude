@@ -5,6 +5,7 @@ import com.example.twittude.model.TwitListItem
 import com.karakum.base.BaseViewModel
 import com.karakum.base.Mvvm
 import kotlinx.android.parcel.Parcelize
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import twitter4j.QueryResult
@@ -44,6 +45,17 @@ class TwitMainViewModel(
         }
     }
 
+    fun launchCounter() {
+        lifecycleScope.launch {
+            repository.incrementCounter()
+        }
+    }
+
+    fun saveTweetToDisk(tweet: TwitListItem) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            repository.saveTweetToDisk(tweet = tweet.text)
+        }
+    }
 
     sealed class State : Mvvm.State {
 
