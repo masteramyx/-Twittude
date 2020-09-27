@@ -7,16 +7,14 @@ import android.view.ViewGroup
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
-import com.example.twittude.views.ListContent
 import com.example.twittude.NavActivity
-import com.example.twittude.api.TwitMainRepositoryImpl
-import com.example.twittude.model.TwitListItem
 import com.example.twittude.theme.TwittudeTheme
+import com.example.twittude.views.ListContent
+import org.koin.core.context.GlobalContext.get
 
 class ListFragment : Fragment() {
 
-    private val viewModel = TwitMainViewModel(TwitMainRepositoryImpl())
-    lateinit var items: List<TwitListItem>
+    private val viewModel: TwitMainViewModel = get().koin.get()
 
 
     @ExperimentalFoundationApi
@@ -26,6 +24,7 @@ class ListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewModel.getToken()
+        viewModel.launchCounter()
         return ComposeView(context = requireContext()).apply {
             setContent {
                 TwittudeTheme {
@@ -39,4 +38,5 @@ class ListFragment : Fragment() {
             }
         }
     }
+
 }

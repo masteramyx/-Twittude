@@ -1,9 +1,6 @@
 package com.example.twittude.views
 
-import androidx.compose.foundation.BaseTextField
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Icon
-import androidx.compose.foundation.Text
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.ColumnScope.weight
 import androidx.compose.foundation.lazy.LazyColumnForIndexed
@@ -41,13 +38,16 @@ fun ListContent(
             Surface(modifier = modifier) {
                 Stack(modifier = Modifier.fillMaxSize()) {
                     Column(modifier = Modifier.fillMaxSize()) {
-                        ListItemView(tweets = state.data.tweets.map {
-                            TwitListItem(
-                                it.text
-                            )
-                        })
+                        ListItemView(
+                            tweets = state.data.tweets.map {
+                                TwitListItem(
+                                    it.text
+                                )
+                            },
+                            viewModel = viewModel
+                        )
                     }
-                    TopBar(
+                    SearchTopBar(
                         onNavIconPressed = onNavIconPressed,
                         search = true,
                         searchTerm = searchTerm,
@@ -63,13 +63,12 @@ fun ListContent(
                     Column(
                         modifier = Modifier.gravity(Alignment.Center)
                     ) {
-                        //ListItemView(tweets = state.data.tweets.map { TwitListItem(it.text) })
                         Text(
                             text = "Please Enter a search term",
                             modifier = Modifier
                         )
                     }
-                    TopBar(
+                    SearchTopBar(
                         onNavIconPressed = onNavIconPressed,
                         search = true,
                         searchTerm = searchTerm,
@@ -84,13 +83,12 @@ fun ListContent(
                     Column(
                         modifier = Modifier.gravity(Alignment.Center)
                     ) {
-                        //ListItemView(tweets = state.data.tweets.map { TwitListItem(it.text) })
                         Text(
                             text = "Please Enter a search term",
                             modifier = Modifier
                         )
                     }
-                    TopBar(
+                    SearchTopBar(
                         onNavIconPressed = onNavIconPressed,
                         search = true,
                         searchTerm = searchTerm,
@@ -104,7 +102,7 @@ fun ListContent(
 
 @ExperimentalFoundationApi
 @Composable
-fun TopBar(
+fun SearchTopBar(
     modifier: Modifier = Modifier,
     onNavIconPressed: () -> Unit = {},
     search: Boolean,
@@ -156,15 +154,7 @@ fun TopBar(
 }
 
 @Composable
-fun searchView() {
-    Column {
-        Text("Search")
-    }
-}
-
-
-@Composable
-fun ListItemView(tweets: List<TwitListItem>) {
+fun ListItemView(tweets: List<TwitListItem>, viewModel: TwitMainViewModel) {
     LazyColumnForIndexed(items = tweets,
         modifier = Modifier.fillMaxSize()
             .weight(1f),
@@ -172,7 +162,7 @@ fun ListItemView(tweets: List<TwitListItem>) {
             if (index == 0) {
                 Spacer(modifier = Modifier.preferredHeight(64.dp))
             } else {
-                ListItem(item)
+                ListItem(item, viewModel)
 
                 Divider()
             }
@@ -181,11 +171,16 @@ fun ListItemView(tweets: List<TwitListItem>) {
 
 
 @Composable
-fun ListItem(item: TwitListItem) {
+fun ListItem(item: TwitListItem, viewModel: TwitMainViewModel) {
     Row(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = {
+                viewModel.saveTweetToDisk(item)
+            })
     ) {
         Text(text = item.text)
     }
 }
+
 
