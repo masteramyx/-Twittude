@@ -27,11 +27,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField 'String', 'TWIT_CONSUMER_KEY', consumerKey()
             buildConfigField 'String', 'TWIT_CONSUMER_SECRET', consumerSecret()
+            buildConfigField 'String', 'TWIT_ENCODED_TOKEN', encodedToken()
+            buildConfigField 'String', 'BASE_URL', "\"https://api.twitter.com/\""
         }
         debug {
             minifyEnabled false
             buildConfigField 'String', 'TWIT_CONSUMER_KEY', consumerKey()
             buildConfigField 'String', 'TWIT_CONSUMER_SECRET', consumerSecret()
+            buildConfigField 'String', 'TWIT_ENCODED_TOKEN', encodedToken()
+            buildConfigField 'String', 'BASE_URL', "\"https://api.twitter.com/\""
         }
     }
 
@@ -88,6 +92,20 @@ dependencies {
     //Logging
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
+    //OkHttp
+    implementation "com.squareup.okhttp3:okhttp:4.8.1"
+    //This is the magical Network Request Logger
+    implementation "com.squareup.okhttp3:logging-interceptor:4.8.1"
+
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-moshi:2.4.0'
+    implementation "com.squareup.moshi:moshi:1.8.0"
+    implementation "com.squareup.moshi:moshi-kotlin:1.8.0"
+    implementation "com.squareup.moshi:moshi-adapters:1.8.0"
+    implementation "androidx.core:core-ktx:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
     //Twitter
     implementation 'org.twitter4j:twitter4j-core:4.0.7'
     implementation 'org.twitter4j:twitter4j-async:4.0.7'
@@ -130,5 +148,15 @@ def consumerSecret() {
         return System.getenv("TWIT_CONSUMER_SECRET")
     } else {
         throw Exceptions("Set API Key")
+    }
+}
+
+def encodedToken() {
+    if (project.hasProperty("TWIT_ENCODED_TOKEN")) {
+        return project.properties["TWIT_ENCODED_TOKEN"]
+    } else if (System.getenv("TWIT_ENCODED_TOKEN") != null) {
+        return System.getenv("TWIT_ENCODED_TOKEN")
+    } else {
+        throw Exceptions("Create Encoded token for auth")
     }
 }
