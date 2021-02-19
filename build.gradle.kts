@@ -7,8 +7,8 @@ buildscript {
     }
 
     dependencies {
-        classpath("com.android.tools.build:gradle:${com.example.twittude.buildsrc.Versions.gradle_plugin}")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${com.example.twittude.buildsrc.Versions.kotlin}")
+        classpath(com.example.twittude.buildsrc.Libs.androidGradlePlugin)
+        classpath(com.example.twittude.buildsrc.Libs.Kotlin.gradlePlugin)
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
