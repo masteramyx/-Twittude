@@ -2,25 +2,22 @@ package com.example.twittude.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.font.font
-import androidx.compose.ui.text.font.fontFamily
+import androidx.compose.ui.text.font.*
 import androidx.compose.ui.unit.sp
 import com.example.twittude.R
 
-private val MontserratFontFamily = fontFamily(
-    font(R.font.montserrat_regular),
-    font(R.font.montserrat_light, FontWeight.Light),
-    font(R.font.montserrat_semibold, FontWeight.SemiBold)
-)
-
-private val KarlaFontFamily = fontFamily(
-    font(R.font.karla_regular),
-    font(R.font.karla_bold, FontWeight.Bold)
-)
+//private val MontserratFontFamily = FontFamily(
+//    Font(R.font.montserrat_regular),
+//    Font(R.font.montserrat_light, FontWeight.Light),
+//    Font(R.font.montserrat_semibold, FontWeight.SemiBold)
+//)
+//
+//private val KarlaFontFamily = FontFamily(
+//    Font(R.font.karla_regular),
+//    Font(R.font.karla_bold, FontWeight.Bold)
+//)
 
 val TwittudeTypography = Typography(
-    defaultFontFamily = MontserratFontFamily,
     h1 = TextStyle(
         fontWeight = FontWeight.Light,
         fontSize = 96.sp,
@@ -57,13 +54,11 @@ val TwittudeTypography = Typography(
         letterSpacing = 0.sp
     ),
     subtitle2 = TextStyle(
-        fontFamily = KarlaFontFamily,
         fontWeight = FontWeight.Bold,
         fontSize = 14.sp,
         letterSpacing = 0.1.sp
     ),
     body1 = TextStyle(
-        fontFamily = KarlaFontFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         letterSpacing = 0.sp,
@@ -80,7 +75,6 @@ val TwittudeTypography = Typography(
         letterSpacing = 1.25.sp
     ),
     caption = TextStyle(
-        fontFamily = KarlaFontFamily,
         fontWeight = FontWeight.Bold,
         fontSize = 12.sp,
         letterSpacing = 0.15.sp

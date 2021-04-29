@@ -2,6 +2,7 @@ package com.example.twittude
 
 import android.app.Application
 import android.util.Log
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
@@ -10,6 +11,7 @@ import org.koin.core.logger.MESSAGE
 import timber.log.Timber
 
 class TwittudeApplication : Application() {
+    @ExperimentalCoroutinesApi
     override fun onCreate() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())

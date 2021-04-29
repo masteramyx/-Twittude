@@ -10,6 +10,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.example.twittude.R
@@ -33,9 +34,9 @@ fun TwittudeAppBar(
             title = title,
             navigationIcon = {
                 Image(
-                    asset = vectorResource(id = R.drawable.ic_ai),
+                    painter = painterResource(id = R.drawable.ic_ai),
+                    contentDescription = "Open Navigation",
                     modifier = Modifier
-                        .gravity(Alignment.CenterHorizontally)
                         .clickable(onClick = onNavIconPressed)
                         .padding(horizontal = 16.dp)
                 )

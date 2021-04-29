@@ -1,4 +1,5 @@
-import com.example.compose.jetchat.buildsrc.Libs
+import com.example.twittude.buildsrc.Libs
+import com.example.twittude.buildsrc.Versions
 
 plugins {
     id 'com.android.application'
@@ -27,11 +28,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField 'String', 'TWIT_CONSUMER_KEY', consumerKey()
             buildConfigField 'String', 'TWIT_CONSUMER_SECRET', consumerSecret()
+            buildConfigField 'String', 'TWIT_ENCODED_TOKEN', encodedToken()
+            buildConfigField 'String', 'BASE_URL', "\"https://api.twitter.com/\""
         }
         debug {
             minifyEnabled false
             buildConfigField 'String', 'TWIT_CONSUMER_KEY', consumerKey()
             buildConfigField 'String', 'TWIT_CONSUMER_SECRET', consumerSecret()
+            buildConfigField 'String', 'TWIT_ENCODED_TOKEN', encodedToken()
+            buildConfigField 'String', 'BASE_URL', "\"https://api.twitter.com/\""
         }
     }
 
@@ -50,31 +55,61 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerVersion Libs.Kotlin.version
-        kotlinCompilerExtensionVersion Libs.AndroidX.Compose.version
+        kotlinCompilerVersion Versions.kotlin
+        kotlinCompilerExtensionVersion Versions.compose
     }
 
 }
 
 dependencies {
+
+    // Kotlin
     implementation Libs.Kotlin.stdlib
+    implementation Libs.Kotlin.stdlib
+
+    // Coroutines
+    implementation Libs.Coroutines.android
+    implementation Libs.Coroutines.core
     implementation Libs.Coroutines.android
 
+    // AndroidX
     implementation Libs.AndroidX.coreKtx
     implementation Libs.AndroidX.appcompat
     implementation Libs.AndroidX.Navigation.fragment
     implementation Libs.AndroidX.Navigation.uiKtx
     implementation Libs.material
+    implementation Libs.AndroidX.coreKtx
 
+    // Compose
     implementation Libs.AndroidX.Compose.layout
     implementation Libs.AndroidX.Compose.material
     implementation Libs.AndroidX.Compose.foundation
     implementation Libs.AndroidX.Compose.materialIconsExtended
     implementation Libs.AndroidX.Compose.tooling
+    implementation Libs.AndroidX.Compose.activity
     implementation Libs.AndroidX.Compose.runtime
     implementation Libs.AndroidX.Compose.runtimeLivedata
     implementation Libs.AndroidX.Compose.rxjava
 
+    // Networking
+    implementation Libs.Networking.okhttp
+    implementation Libs.Networking.okhttp_logger
+    implementation Libs.Networking.moshi
+    implementation Libs.Networking.moshi_kotlin
+    implementation Libs.Networking.moshi_adapters
+    implementation Libs.Networking.retrofit
+    implementation Libs.Networking.retrofit_rx
+    implementation Libs.Networking.retrofit_moshi
+
+
+    // Koin Dependency Injection
+    implementation Libs.Koin.koin_core
+    implementation Libs.Koin.koin_core_ext
+    implementation Libs.Koin.koin_androidx_scope
+    implementation Libs.Koin.koin_androidx_vm
+    implementation Libs.Koin.koin_experimental
+
+    // Test
     androidTestImplementation Libs.junit
     androidTestImplementation Libs.AndroidX.Test.core
     androidTestImplementation Libs.AndroidX.Test.espressoCore
@@ -82,34 +117,18 @@ dependencies {
     androidTestImplementation Libs.AndroidX.Test.Ext.junit
     androidTestImplementation Libs.AndroidX.Compose.uiTest
 
-    //Personal
-    implementation 'com.github.masteramyx:Karakum:1.4.2'
-    //Logging
-    implementation 'com.jakewharton.timber:timber:4.7.1'
+    //Base class libs & Logging
+    implementation Libs.Misc.karakum
+    implementation Libs.Misc.timber
+
 
     //Twitter
-    implementation 'org.twitter4j:twitter4j-core:4.0.7'
-    implementation 'org.twitter4j:twitter4j-async:4.0.7'
-    // Dependency Injection
-    // Koin for Kotlin
-    implementation "org.koin:koin-core:$koin_version"
-    // Koin extended & experimental features
-    implementation "org.koin:koin-core-ext:$koin_version"
-    // Koin AndroidX Scope features
-    implementation "org.koin:koin-androidx-scope:$koin_version"
-    // Koin AndroidX ViewModel features
-    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
-    // Koin AndroidX Experimental features
-    implementation "org.koin:koin-androidx-ext:$koin_version"
-    //Coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9'
+    implementation Libs.Misc.twitter4j_core
+    implementation Libs.Misc.twitter4j_async
 
-    //RxJava
-    implementation 'com.jakewharton.rxbinding2:rxbinding:2.1.0'
 
     //Data Store
-    implementation 'androidx.datastore:datastore-preferences:1.0.0-alpha01'
+    implementation Libs.Misc.datastore
 }
 
 def consumerKey() {
@@ -129,5 +148,15 @@ def consumerSecret() {
         return System.getenv("TWIT_CONSUMER_SECRET")
     } else {
         throw Exceptions("Set API Key")
+    }
+}
+
+def encodedToken() {
+    if (project.hasProperty("TWIT_ENCODED_TOKEN")) {
+        return project.properties["TWIT_ENCODED_TOKEN"]
+    } else if (System.getenv("TWIT_ENCODED_TOKEN") != null) {
+        return System.getenv("TWIT_ENCODED_TOKEN")
+    } else {
+        throw Exceptions("Create Encoded token for auth")
     }
 }

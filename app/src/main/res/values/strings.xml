@@ -2,4 +2,5 @@
     <string name="app_name">Twittude</string>
     <string name="search_nav">Search</string>
     <string name="history_nav">History</string>
+    <string name="version">Version %s</string>
 </resources>
