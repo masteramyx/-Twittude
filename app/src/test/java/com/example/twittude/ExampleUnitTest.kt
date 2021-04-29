@@ -1,5 +1,6 @@
 package com.example.twittude
 
+import com.karakum.coretest.BaseMockUnitTestClass
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -9,7 +10,7 @@ import org.junit.Assert.*
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
-class ExampleUnitTest {
+class ExampleUnitTest: BaseMockUnitTestClass() {
     @Test
     fun addition_isCorrect() {
         assertEquals(4, 2 + 2)

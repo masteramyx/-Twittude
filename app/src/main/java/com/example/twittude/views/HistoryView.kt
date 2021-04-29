@@ -14,7 +14,7 @@ import timber.log.Timber
 
 @ExperimentalFoundationApi
 @Composable
-fun HistoryContent(
+fun HistoryView(
     modifier: Modifier = Modifier,
     onNavIconPressed: () -> Unit = { },
     viewModel: TwitHistoryViewModel,

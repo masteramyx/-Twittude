@@ -26,8 +26,8 @@ class TwitHistoryViewModel(
         }
     }
 
-
-    sealed class State : Mvvm.State {
+    @Parcelize
+    open class State : Mvvm.State {
 
         @Parcelize
         data class Data(val tweetList: List<String>) : State()

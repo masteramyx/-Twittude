@@ -8,10 +8,6 @@ import com.karakum.base.Mvvm
 import kotlinx.android.parcel.Parcelize
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
